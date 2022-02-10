@@ -1,3 +1,4 @@
-/venv
-/__pycache__
 /.idea
+/venv
+/code/__pycache__
+/__pycache__
