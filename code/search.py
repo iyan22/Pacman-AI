@@ -118,20 +118,16 @@ def breadthFirstSearch(problem):
     visited = []
     # Create a queue
     queue = Queue()
-    # Create a list to store nodes that have been pushed to the queue
-    inqueue = []
     # Obtain start position
     initial = problem.getStartState()
     # Push initial position and empty path to the queue
     queue.push((initial, []))
-    # Add initial position to inqueue list
-    inqueue.append(initial)
+    #Add inital position to visited
+    visited.append(initial)
     # While there are options to process
     while not queue.isEmpty():
         # Obtain last pushed state
         (actual, path) = queue.pop()
-        # Mark actual as visited
-        visited.append(actual)
         # If finished return path
         if problem.isGoalState(actual):
             return path
@@ -140,9 +136,9 @@ def breadthFirstSearch(problem):
         # Iterate all succesors
         for s in succesors:
             # If next position has not been visited yet
-            if s[0] not in visited and s[0] not in inqueue:
-                # Add position to inqueue list
-                inqueue.append(s[0])
+            if s[0] not in visited:
+                # Mark next as visited
+                visited.append(s[0])
                 # Push position and the path to that position
                 queue.push((s[0], path + [s[1]]))
                 # Uncomment to visualize the algorithm execution
@@ -153,7 +149,40 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from util import PriorityQueue
+    from game import Directions
+
+    # Define list for visited positions
+    visited = []
+    # Create a priority queue
+    pqueue = PriorityQueue()
+    # Obtain start position
+    initial = problem.getStartState()
+    # Push initial position and empty path to the queue with 0 cost
+    pqueue.push((initial, [], 0), 0)
+    # While there are options to process
+    while not pqueue.isEmpty():
+        # Obtain last pushed state
+        (actual, path, cost) = pqueue.pop()
+        # Check that node has not been already processed
+        if actual not in visited:
+            # Mark actual as visited
+            visited.append(actual)
+            # If finished return path
+            if problem.isGoalState(actual):
+                return path
+            # Obtain all succesors of actual position
+            succesors = problem.getSuccessors(actual)
+            # Iterate all succesors
+            for s in succesors:
+                # If next position has not been visited yet
+                if s[0] not in visited:
+                    # Push position and the path to that position
+                    pqueue.push((s[0], path + [s[1]], cost + s[2]), cost + s[2])
+                    # Uncomment to visualize the algorithm execution
+                    # print("Actual: ", actual, " - ", s[1], " - Next: ", s[0], " - Cost: ", s[2], " - Path:", path, " - Path cost:", cost)
+    # Otherwise, there is no path
+    return [Directions.STOP]
 
 def nullHeuristic(state, problem=None):
     """
