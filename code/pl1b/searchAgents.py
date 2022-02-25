@@ -22,6 +22,7 @@ description for details.
 
 Good luck and happy searching!
 """
+import math
 
 from game import Directions
 from game import Agent
@@ -387,7 +388,24 @@ def cornersHeuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0  # Default to trivial solution
+    p = state[0]
+    cbl = corners[0]
+    ctl = corners[1]
+    cbr = corners[2]
+    ctr = corners[3]
+
+    dis = []
+    dis.append(abs(p[0] - cbl[0]) + abs(p[1] - cbl[1]))
+    dis.append(abs(p[0] - ctl[0]) + abs(p[1] - ctl[1]))
+    dis.append(abs(p[0] - cbr[0]) + abs(p[1] - cbr[1]))
+    dis.append(abs(p[0] - ctr[0]) + abs(p[1] - ctr[1]))
+
+    imindis = dis.index(min(dis))
+
+    vc = [not elem for elem in state[1]]
+    hlist = [(a * b) * 0.5 for a, b in zip(dis, vc)]
+    return sum(hlist)
+    # return 0 Default to trivial solution
 
 
 class AStarCornersAgent(SearchAgent):
