@@ -1,4 +1,5 @@
 /.idea
 /venv
+/code/__pycache__
 /code/pl1a/__pycache__
 /code/pl1b/__pycache__
