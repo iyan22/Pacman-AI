@@ -225,6 +225,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                     pqueue.push((s[0], path + [s[1]], cost + s[2]), cost + s[2] + heuristic(s[0], problem))
                     # Uncomment to visualize the algorithm execution
                     # print("Actual: ", actual, " - ", s[1], " - Next: ", s[0], " - Cost: ", s[2], " - Path:", path, " - f cost (g+h):", cost + heuristic(s[0], problem))
+    # Otherwise, there is no path
     return [Directions.STOP]
 
 # Abbreviations
