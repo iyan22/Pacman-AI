@@ -388,23 +388,19 @@ def cornersHeuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
+    # Save actual position
     p = state[0]
-    cbl = corners[0]
-    ctl = corners[1]
-    cbr = corners[2]
-    ctr = corners[3]
-
+    # Create empty list for corner distances
     dis = []
-    dis.append(abs(p[0] - cbl[0]) + abs(p[1] - cbl[1]))
-    dis.append(abs(p[0] - ctl[0]) + abs(p[1] - ctl[1]))
-    dis.append(abs(p[0] - cbr[0]) + abs(p[1] - cbr[1]))
-    dis.append(abs(p[0] - ctr[0]) + abs(p[1] - ctr[1]))
-
-    imindis = dis.index(min(dis))
-
+    # Calculate manhattan distance from actual position to each corner
+    for c in range(len(corners)):
+        dis.append(util.manhattanDistance(p, corners[c]))
+    # Invert visited corners list
     vc = [not elem for elem in state[1]]
-    hlist = [(a * b) * 0.5 for a, b in zip(dis, vc)]
-    return sum(hlist)
+    # If corner already visited 0, else dis
+    hlist = [a * b for a, b in zip(dis, vc)]
+    # Return maximum distance
+    return max(hlist)
     # return 0 Default to trivial solution
 
 
