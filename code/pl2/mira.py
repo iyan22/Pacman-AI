@@ -51,9 +51,33 @@ class MiraClassifier:
         representing a vector of values.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # For each element in Cgrid
+        for c in Cgrid:
+            # Iterate max_iterations
+            for iteration in range(self.max_iterations):
+                print "Starting iteration ", iteration, " for C value ", c
+                # For each training data
+                for i in range(len(trainingData)):
+                    # Obtain the predicted class
+                    predictedClass = self.classify([trainingData[i]])[0]
+                    # Obtain the real class
+                    realClass = trainingLabels[i]
+                    # If the prediction is not correct
+                    if predictedClass != realClass:
+                        # Make copy of f (to not modify the real one)
+                        f = trainingData[i].copy()
+                        # Obtain tau
+                        val = ((self.weights[predictedClass] - self.weights[realClass]) * f + 1.0) / 2.0 * (f * f)
+                        tau = min(val, c)
+                        # Multiply all the elements by tau, so now f is tau*f
+                        for key in f.keys():
+                            f[key] *= tau
+                        # Adjust weights with tau*f
+                        self.weights[realClass] += f
+                        self.weights[predictedClass] -= f
 
-    def classify(self, data ):
+
+    def classify(self, data):
         """
         Classifies each datum as the label that most closely matches the prototype vector
         for that label.  See the project description for details.
